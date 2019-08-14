@@ -1,0 +1,141 @@
+.fadeIn{
+  animation-name: fadeIn;
+  -webkit-animation-name: fadeIn;
+
+  animation-duration: 750ms;
+  -webkit-animation-duration: 750ms;
+
+  animation-timing-function: ease-in-out;
+  -webkit-animation-timing-function: ease-in-out;
+
+  visibility: visible !important;
+}
+
+@keyframes fadeIn {
+  0% {
+    transform: scale(0);
+    opacity: 0.0;
+  }
+  60% {
+    transform: scale(1);
+  }
+  80% {
+    transform: scale(0.9);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes fadeIn {
+  0% {
+    -webkit-transform: scale(0);
+    opacity: 0.0;
+  }
+  60% {
+    -webkit-transform: scale(1.1);
+  }
+  80% {
+    -webkit-transform: scale(0.9);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Pop Up Container */
+#popup {
+  background-color: $black;
+  display: none;
+  //@include font-family(ADD YOUR FAMILY);
+  max-width: 530px;
+  position: fixed;
+  width: 100%;
+  text-align: center;
+  z-index: 1002;
+
+  #close-button {
+    background: none;
+    border: none;
+    color: $white;
+    font-weight: $medium;
+    cursor: pointer;
+    font-size: 30px;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+  }
+
+  .content {
+    padding: 50px 30px 30px;
+    text-align: center;
+
+    h2 {
+      @include font(2.4, $medium, $white);
+      text-align: center;
+      text-transform: uppercase;
+      @include breakpoint(tablet) { @include font-size(3.6); }
+    }
+
+    p {
+      @include font(1.4, $medium, $white);
+      height: auto;
+      letter-spacing: 0;
+      padding: 20px 20px 0;
+      width: auto;
+      text-transform: uppercase;
+      @include breakpoint(tablet) { @include font-size(1.8); }
+
+      a {
+        color: $white;
+        text-decoration: none;
+        &:hover { text-decoration: underline; }
+      }
+    }
+  }
+
+  .restriction {
+    text-transform: uppercase;
+    @include font(1.2, $light, $white);
+    padding: 0 0 50px 0;
+  }
+}
+
+#bg-overlay {
+  background: rgba($white, .5);
+  display: none;
+  height: 100%;
+  left: 0;
+  margin: auto;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1001;
+}
+
+
+/* Media Queries */
+@media only screen and (max-width: 610px) {
+  #popup {
+    width: 84%;
+    .content {
+      padding: 50px 10px;
+    }
+    h2 { @include font-size(2.2); }
+    p { @include font-size(1.5); }
+    .restriction { @include font-size(1.1); }
+  }
+}
+
+@media only screen and (max-width: 430px) {
+  #popup {
+    position: absolute;
+    top: 20px !important;
+    h2 { @include font-size(1.5); }
+    p { @include font-size(1.2); }
+  }
+}

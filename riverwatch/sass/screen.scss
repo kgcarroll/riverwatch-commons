@@ -1,0 +1,1683 @@
+@import "compass/reset";
+@import "compass/utilities";
+@import "compass/css3/";
+@import "modules/variables";
+@import "modules/mixins";
+@import "modules/popup";
+@import "modules/lightbox";
+
+%cf {
+  &:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+}
+
+html {
+  font-size: 62.5%;
+}
+body {
+  @include transition(all .25s ease);
+  // &.logged-in { padding-top: 32px; }
+  // @include breakpoint(tablet) {
+  //   &.logged-in { padding-top: 46px; }
+  // }
+}
+
+.container {
+  padding: 115px 0 0;
+  position: relative;
+  z-index: 1;
+  @include breakpoint(tablet) { padding: 155px 0 0; }
+  // @include breakpoint(ten) { padding: 155px 0 0; }
+  .content {
+    background: $white;
+  }
+}
+
+.wrapper {
+  margin: 0 auto;
+  @include breakpoint(sixteen) {
+    padding: 0 20px;
+    max-width: 1680px;
+  }
+  @include breakpoint(nineteen) { max-width: 1920px; }
+  @include breakpoint(over19) { padding: 0; }
+}
+
+.wrapper-small {
+  margin: 0 auto;
+  @include breakpoint(fourteen) {
+    padding: 0 20px;
+    max-width: 1260px;
+  }
+}
+
+.clearfix {
+  clear: both;
+}
+#mobile-specials-container,
+#specials-container {
+   @extend %cf;
+   @include transition(all 0.5s linear);
+   position: absolute;
+   top: 0;
+   left: 0;
+   z-index: 1000;
+   height: 110px;
+   overflow: hidden;
+   max-width: 0;
+   padding-right: 44px;
+   @include breakpoint(tablet){
+     height: 140px;
+     padding-right: 34px;
+   }
+   @include breakpoint(ten){
+     padding-right: 44px;
+   }
+   &.show {
+     max-width: 1000px;
+   }
+   #mobile-specials-button,
+   #specials-button {
+     @include transform(rotate(90deg));
+     height: auto;
+     width: 110px;
+     overflow: hidden;
+     position: absolute;
+     top: 32px;
+     right: -32px;
+     cursor: pointer;
+     text-align: center;
+     z-index: 3;
+     text-transform: uppercase;
+     padding: 15px 0;
+     background-color: $blue;
+     @include font-family($opensans);
+     @include font(1.6, $normal, $white);
+     letter-spacing: 2px;
+     @include breakpoint(tablet){
+       width: 142px;
+       padding: 10px 0;
+       top: 53px;
+       right: -53px;
+     }
+     @include breakpoint(ten){
+       padding: 15px 0;
+       top: 48px;
+       right: -48px;
+     }
+   }
+   #specials {
+     height: 100px;
+     width: 256px;
+     background: url('../images/RC_Stripe.png') repeat center center $blue;
+     position: relative;
+     padding: 5px 10px;
+     z-index: 2;
+     @include breakpoint(tablet) {
+      width: 210px;
+      height: 130px;
+     }
+     .inner {
+       .special {
+         .special-title {
+           @include font-family($opensans);
+           @include font(2, $normal, $white);
+           text-transform: uppercase;
+           padding-top: 5px;
+         }
+         .special-disclaimer {
+           position: absolute;
+           bottom: 5px;
+           left: 10px;
+           @include font-family($opensans);
+           @include font(1.4, $normal, $white);
+         }
+       }
+     }
+   }
+ }
+
+#mobile-header {
+  border-bottom: 5px solid $orange;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  overflow: hidden;
+  z-index: 2;
+  max-height: 110px;
+  background: $white;
+  @include transition(all .25s ease);
+  &.open { max-height: 500px; height: auto; }
+  #logo {
+    width: 55px;
+    margin: 10px auto 0;
+    img { width: 100%; }
+  }
+  .navigation {
+    margin: 20px 0 0;
+    ul {
+      text-align: center;
+      background: url('../images/RC_Stripe.png') repeat center center rgba($white, 0.4);
+      li {
+        padding: 10px 0;
+        a {
+          @include font-family($opensans);
+          @include font(1.4, $normal, $textgray);
+          text-transform: lowercase;
+          text-decoration: none;
+        }
+      }
+      li.logo {display: none;}
+    }
+  }
+
+  .trigger {
+    height: 21px;
+    width: 30px;
+    position: relative;
+    @include transition(all 250ms linear);
+    cursor: pointer;
+    position: absolute;
+    right: 15px;
+    top: 47px;
+    @include breakpoint(tablet) { right: 30px; }
+    @include breakpoint(ten) { display: none; }
+
+    &:hover {
+      span { background: $orange; }
+    }
+
+    .line {
+      display: block;
+      position: absolute;
+      height: 5px;
+      width: 100%;
+      background: $menu;
+      border-radius: 0;
+      opacity: 1;
+      left: 0;
+      @include transition(all 250ms linear);
+
+      &:nth-child(1) { top: 0px; }
+      &:nth-child(2) { top: 8px; }
+      &:nth-child(3) { top: 16px; }
+
+    }
+
+    // Open Styles
+    &.open {
+      .line {
+        &:nth-child(1) { top: 8px; @include transform(rotate(135deg)); }
+        &:nth-child(2) { opacity: 0; }
+        &:nth-child(3) { top: 8px; @include transform(rotate(-135deg)); }
+      }
+    }
+  }
+  @include breakpoint(tablet) { display: none; }
+}
+
+#header {
+  display: none;
+  z-index: 2;
+  width: 100%;
+  position: relative;
+  @include breakpoint(tablet) { display: block; position: fixed;}
+  // @include breakpoint(ten) { position: fixed; }
+  .header-wrap {
+    background: $white;
+    height: 155px;
+    .navigation {
+      width: 676px;
+      margin: 0px auto;
+      padding: 15px 0 0 0;
+      overflow: hidden;
+      @include breakpoint(ten) {
+        width: 746px;
+      }
+      ul {
+        width: 100%;
+        li {
+          float: left;
+          padding: 0 10px;
+          margin: 54px 0 0 0;
+          width: 75px;
+          a {
+            @include font-family($opensans);
+            @include font(1.4, $normal, $textgray);
+            @include transition(all .25s ease);
+            text-decoration: none;
+            text-transform: lowercase;
+            text-align: center;
+            display: block;
+            &:hover {
+              color: $orange;
+            }
+          }
+          &:first-child {
+            padding-left: 0;
+          }
+          &:last-child {
+            padding-right: 0;
+          }
+          &.current-menu-item {
+            a { color: $orange; }
+          }
+          &.logo {
+            background: url('../images/logo.png');
+            background-repeat: no-repeat;
+            background-position: bottom center;
+            height: 127px;
+            display: block;
+            width: 86px;
+            margin-top: 0;
+            padding: 0 20 px;
+            @include breakpoint(ten) {
+              padding: 0 55px;
+            }
+            a {
+              box-sizing: border-box;
+              padding: 55px 20px;
+              font-size: 0;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// Main Content
+#main-page-content {
+  display: table;
+  background-position: center center;
+  background-size: cover;
+  width: 100%;
+  position: relative;
+  z-index: 2;
+  @include breakpoint(tablet) {
+    position: fixed;
+  }
+  #content-wrapper-image {
+    display:table-cell;
+    vertical-align:middle;
+    background: url('../images/RC_Stripe.png') repeat center center rgba($black, 0.4);
+    padding: 30px;
+  }
+  #content-wrapper {
+    display:table-cell;
+    vertical-align:middle;
+  }
+  #main-headline {
+    @include font-family($squada);
+    @include font(2.1,$medium,$white);
+    text-transform: uppercase;
+    text-align: center;
+    letter-spacing: 1px;
+    max-width: 85%;
+    margin: 30px auto 0;
+    @include breakpoint(tablet) {
+      max-width: 1260px;
+      margin: 0 auto;
+      padding: 0 50px 30px;
+      @include font-size(4.8);
+    }
+    @include breakpoint(ten) {
+      padding: 0;
+    }
+    .emphasis {
+      @include font-size(2.7);
+      @include breakpoint(tablet) {
+        @include font-size(6.3);
+      }
+    }
+  }
+  #headline-h1 {
+    @include font-family($opensans);
+    @include font(1.6, $bold, $white);
+    line-height: 1.5;
+    text-align: center;
+    padding: 0 30px;
+    margin: 30px auto;
+    @include breakpoint(tablet) {
+      padding: 0;
+      @include font-size(2.4);
+    }
+  }
+  #main-content {
+    @include font-family($opensans);
+    @include font(1.4, $normal, $white);
+    line-height: 1.5;
+    text-align: center;
+    margin: 0 auto 30px;
+    max-width: 75%;
+    @include breakpoint(tablet) {
+      padding: 0 50px;
+      max-width: 875px;
+      line-height: 1.25;
+      @include font-size(1.8);
+    }
+    @include breakpoint(ten) {
+      padding: 0;
+    }
+  }
+}
+
+// Homepage Overrides
+.home {
+  #main-page-content {
+    position: relative;
+    &.fixed {
+      position: fixed;
+      top: 155px;
+    }
+  }
+
+  #header {
+    position: relative;
+    &.fixed {
+      position: fixed;
+      top: 0;
+    }
+  }
+
+  .container {
+    padding: 0;
+  }
+}
+
+#call-to-action {
+  clear: both;
+  position: relative;
+  background: $white;
+  z-index: 2;
+  overflow: hidden;
+  @include breakpoint(tablet) { padding: 40px 0; }
+  .cta-wrapper {
+    .cta-block {
+      position: relative;
+      box-sizing: border-box;
+      height: 200px;
+      &.block-2, &.block-3, &.block-4 { display: none; }
+      @include breakpoint(tablet) {
+        width: 25%;
+        float: left;
+        height: 177px;
+        &.block-2, &.block-3, &.block-4 { display: block; }
+      }
+      @include breakpoint(twelve) { height: 250px; }
+      @include breakpoint(fourteen) { height: 354px; }
+
+      .link {
+        position: absolute;
+        right: 0;
+        left: 0;
+        z-index: 1;
+        @include transition(all .25 ease);
+        @include breakpoint(tablet) {
+          right: 5px;
+          left: 5px;
+        }
+        .cta-block-wrapper {
+          background-size: cover;
+          background-position: center center;
+          display: table;
+          width: 100%;
+          padding: 0;
+          box-sizing: border-box;
+          height: 200px;
+          @include breakpoint(tablet) {
+            height: 177px;
+          }
+         @include breakpoint(twelve) {
+            height: 250px;
+            padding: 50px;
+          }
+          @include breakpoint(fourteen) {
+            height: 354px;
+            padding: 75px;
+          }
+          @include breakpoint(sixteen) {
+            padding: 100px;
+          }
+          .cta-link {
+            display: table-cell;
+            height: 100%;
+            text-align: center;
+            vertical-align: middle;
+            width: 100%;
+
+            .link-text {
+              @include transition(all .05s ease);
+              @include font-family($squada);
+              @include font(2.4,$medium,$white);
+              text-transform: uppercase;
+              background: none;
+              opacity: 1;
+              @include breakpoint(tablet) {
+                @include font-size(2.8);
+              }
+              @include breakpoint(twelve) {
+                @include font-size(3.4);
+              }
+              @include breakpoint(fourteen) {
+                @include font-size(4.2);
+              }
+            }
+          }
+        }
+      }
+      .text {
+        position: absolute;
+        opacity: 0;
+        z-index: 2;
+        background: none;
+        width: 100%;
+        @include transition(all .25s ease);
+        @include breakpoint(tablet) {
+          width: calc(100% - 10px);
+          right: 5px;
+          left: 5px;
+        }
+        .text-wrapper-outer {
+          display: table;
+          width: 100%;
+          padding: 20px;
+          box-sizing: border-box;
+          height: 200px;
+          @include breakpoint(tablet) {
+            height: 177px;
+          }
+          @include breakpoint(twelve) {
+            height: 250px;
+            padding: 50px;
+          }
+          @include breakpoint(fourteen) {
+            height: 354px;
+            padding: 75px;
+          }
+          @include breakpoint(sixteen) {
+            padding: 100px;
+          }
+          .text-wrapper-inner {
+            display: table-cell;
+            height: 100%;
+            text-align: center;
+            vertical-align: middle;
+            width: 100%;
+            a {
+              text-decoration: none;
+              .cta-title {
+                @include transition(all .25s ease);
+                @include font-family($squada);
+                @include font(2.4,$medium,$white);
+                text-transform: uppercase;
+                width: inherit;
+                height: inherit;
+                @include breakpoint(tablet) {
+                  @include font-size(2.8);
+                }
+                @include breakpoint(twelve) {
+                  @include font-size(3.4);
+                }
+                @include breakpoint(fourteen) {
+                  @include font-size(4.2);
+                }
+              }
+            }
+          }
+        }
+      }
+      &:hover {
+        .link {
+          .link-text {
+            opacity: 0;
+          }
+        }
+        .text {
+          opacity: 1;
+          background: url('../images/RC_Stripe.png') repeat center center rgba($orange, 0.6);
+        }
+      }
+      &.block-1 {
+        @include breakpoint(tablet) {
+          .text, .link { right: 5px; left: 10px; }
+          .text { width: calc(100% - 15px); }
+        }
+      }
+      &.block-2 {
+        @include breakpoint(tablet) {
+          .text, .link { right: 5px; left: 5px; }
+        }
+        // @include breakpoint(ten) {
+        //   .text, .link { right: 5px; left: 5px; }
+        // }
+      }
+      &.block-3 {
+        @include breakpoint(tablet) {
+          .text, .link { right: 5px; left: 5px; }
+        }
+        // @include breakpoint(ten) {
+        //   .text, .link { right: 5px; left: 5px; }
+        // }
+      }
+      &.block-4 {
+        @include breakpoint(tablet) {
+          .text, .link { right: 10px; left: 5px; }
+          .text { width: calc(100% - 15px); }
+        }
+        // @include breakpoint(ten) {
+        //   .text, .link { right: 10px; left: 5px; }
+        // }
+      }
+    }
+  }
+}
+
+#list-background-image {
+  background-size: cover;
+  background-position: bottom center;
+  background-repeat: no-repeat;
+  position: relative;
+  z-index: 2;
+  margin: 15px 0;
+  @include breakpoint(tablet) {
+    background-size: contain;
+    margin: 0;
+  }
+  .overlay-wrapper {
+    height: auto;
+    padding-bottom: 0;
+    background: url('../images/RC_Stripe.png') repeat center center rgba($orange, 0.6);
+    @include breakpoint(tablet) {
+      height: 0;
+      padding-bottom: 35.15%
+    }
+    .list-wrapper {
+      .left,
+      .right {
+        @include breakpoint(tablet) {
+          float: left;
+          width: calc(50% - 45px);
+        }
+        @include breakpoint(fourteen) {
+          width: 48%;
+        }
+      }
+      .left {
+        padding: 30px 30px 0;
+        @include breakpoint(tablet) { padding: 30px 15px 0 30px; }
+        @include breakpoint(twelve) { padding: 50px 15px 0 30px; }
+        @include breakpoint(fourteen) { padding: 75px 2% 0 0; }
+      }
+      .right {
+        padding: 0 30px 30px;
+        @include breakpoint(tablet) { padding: 30px 30px 0 15px; }
+        @include breakpoint(twelve) { padding: 50px 30px 0 15px; }
+        @include breakpoint(fourteen) { padding: 75px 0 0 2%; }
+      }
+
+      ul li {
+        @include font-family($squada);
+        @include font(2.2,$medium,$white);
+        text-transform: uppercase;
+        margin: 0 0 15px;
+        @include breakpoint(ten) {
+          margin: 0 0 20px;
+          @include font-size(3);
+        }
+        @include breakpoint(fourteen) {
+          @include font-size(3.8);
+        }
+        @include breakpoint(sixteen) {
+          @include font-size(4.8);
+        }
+      }
+    }
+  }
+}
+
+
+
+.landing-page-content {
+  background-size: cover;
+  background-position: top center;
+  display: table;
+  width: 100%;
+  position: relative;
+  top: 0;
+  z-index: 1;
+  padding: 110px 0 0;
+  @include breakpoint(tablet) {
+    padding: 0;
+    position: fixed;
+  }
+  .stripes {
+    background: url('../images/RC_Stripe.png') repeat center center rgba($black,.35);
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+    .headline {
+      @include font-family($squada);
+      @include font(3.4,$medium,$white);
+      text-transform: uppercase;
+      margin: 0 auto 40px;
+      max-width: 90%;
+      @include breakpoint(tablet) {
+        max-width: 70%;
+        @include font-size(7);
+      }
+      @include breakpoint(ten) {
+        max-width: 50%;
+      }
+      @include breakpoint(twelve) {
+        max-width: 30%;
+        @include font-size(9.5);
+      }
+    }
+    .content {
+      @include font-family($opensans);
+      @include font(1.6,$medium,$white);
+      padding: 0 25px;
+      line-height: 1.25;
+      @include breakpoint(tablet) { @include font-size(2); }
+      @include breakpoint(twelve) { @include font-size(2.4); }
+    }
+    #scroll {
+      margin: 125px 0 0;
+      display: inline-block;
+      @include font-family($squada);
+      @include font(2.4,$medium,$orange);
+      text-transform: uppercase;
+      cursor: pointer;
+      .link {
+        margin: 0 0 15px 0;
+      }
+    }
+  }
+}
+
+#home{
+  @include box-sizing(border-box);
+  #main-page-content {
+    margin: 10px 0px;
+    @include breakpoint(tablet) {
+      margin: 0;
+    }
+  }
+}
+
+#area {
+  // Points of Interest Map
+  #map-container {
+    width: 100%;
+    display: block;
+    z-index: 1;
+    position: relative;
+    @include breakpoint(tablet) { position: fixed; }
+    .categories-container {
+      display: none;
+      background: url('../images/RC_Stripe.png') repeat center center $orange;
+      @include breakpoint(tablet) { display: block; }
+      ul#categories {
+        text-align: center;
+        padding: 20px 0;
+        li {
+          padding: 0 10px;
+          @include font-family($squada);
+          @include font(1.8,$medium,$peach);
+          text-transform: uppercase;
+          display: inline-block;
+          cursor: pointer;
+          @include transition(all .25s ease);
+          @include breakpoint(ten) {
+            padding: 0 20px;
+            @include font-size(2.4);
+          }
+          &:hover {color: $white; }
+          &.active {
+            color: $white;
+            &:hover { color: $peach; }
+          }
+          &:first-child { padding-left: 0; }
+          &:last-child { padding-right: 0; }
+
+          // Hide actual POIs
+          ul { display: none; }
+        }
+      }
+    }
+    #map {
+      height: 375px;
+      width: 100%;
+      @include breakpoint(tablet) { height: 475px; }
+      @include breakpoint(ten) { height: 600px; }
+      .info-window {
+        overflow: hidden;
+        white-space: nowrap;
+      }
+    }
+  }
+
+  // Main Content
+  #main-page-content {
+    pointer-events: none;
+    position: relative;
+    margin: 0;
+    #content-wrapper {
+      margin: 80px 0;
+      border-top: 2px solid $orange;
+      background: $white;
+      #main-headline {
+        @include font-family($squada);
+        @include font(2.8,$medium,$blue);
+        text-transform: uppercase;
+        text-align: center;
+        letter-spacing: 1px;
+        margin: 40px auto 0;
+        max-width: 70%;
+        @include breakpoint(tablet) {
+          @include font-size(4.8);
+          max-width: 100%;
+        }
+      }
+      #headline-h1 {
+        @include font-family($opensans);
+        @include font(1.6, $bold, $textgray);
+        line-height: 1.5;
+        text-align: center;
+        margin: 40px auto 0;
+        max-width: 75%;
+        @include breakpoint(tablet) { @include font-size(2.4); }
+      }
+      #main-content {
+        @include font-family($opensans);
+        @include font(1.6, $normal, $textgray);
+        line-height: 1.25;
+        text-align: center;
+        margin: 40px auto  0;
+        max-width: 90%;
+        @include breakpoint(tablet) {
+          @include font-size(1.8);
+          max-width: 75%;
+        }
+        @include breakpoint(ten) {
+          max-width: 60%;
+        }
+      }
+    }
+  }
+  #area-list {
+    background: url("../images/RC_Stripe.png") repeat center center rgba($orange, .85);
+    padding: 15px 30px;
+    margin: 30px 0 15px;
+    ul {
+      li {
+        @include font-family($squada);
+        @include font(2.4,$medium,$white);
+        text-transform: uppercase;
+        padding: 15px 0;
+      }
+    }
+    @include breakpoint(tablet) { display: none; }
+  }
+}
+
+#floorplans {
+  .content {
+    .categories {
+      background-color: $darkgray;
+      background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
+      min-height: 450px;
+      .stripes {
+        background: url("../images/RC_Stripe.png") repeat center center rgba($black,.35);
+        width: 100%;
+        height: 450px;
+        display: table;
+        @include breakpoint(tablet) {
+          height: auto;
+        }
+        .static-landing {
+          margin: 0 auto;
+          width: 100%;
+          text-align: center;
+          display: table-cell;
+          vertical-align: middle;
+          .headline-top {
+            h2 {
+              @include font-family($squada);
+              @include font(2.8,$medium,$white);
+              text-transform: uppercase;
+              letter-spacing: 1px;
+              @include breakpoint(tablet) { @include font-size(4.8); }
+            }
+          }
+          .category-wrapper {
+            margin: 0 auto;
+            overflow: hidden;
+            max-width: 258px;
+            @include breakpoint(tablet) {
+              max-width: 627px;
+            }
+            .landing-category { 
+              background: $orange;
+              border: none;
+              color: $white;
+              cursor: pointer;
+              display: inline-block;
+              margin: 25px 5px 0 5px;
+              vertical-align: bottom;
+              float: left;
+              display: table;
+              text-decoration: none;
+              height: 76px;
+              width: 76px;
+              @include breakpoint(tablet) {
+                margin: 25px 15px 0 15px;
+                height: 173px;
+                width: 173px;
+              }
+              .title {
+                display: table-cell;
+                vertical-align: middle;
+                position: relative;
+                @include font-family($squada);
+                @include font(2.1,$medium,$white);
+                @include transition(all .25s ease);
+                text-transform: uppercase;
+                @include breakpoint(tablet) {
+                  @include font-size(4.8);
+                }
+                .rooms {
+                  display: block;
+                  @include font-size(1.3);
+                  @include breakpoint(tablet) { @include font-size(3); }
+                }
+              }
+              &:hover {
+                .title {
+                  color: $peach;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    .bottom-section {
+      .headline-bottom {
+        @include font-family($opensans);
+        @include font(1.6 , $bold, $textgray);
+        line-height: 1.25;
+        text-align: center;
+        padding: 40px 65px 0;
+        @include breakpoint(tablet) {
+          padding: 80px 0;
+          @include font-size(2.4);
+        }
+      }
+      .floor-plans .inner-column {
+        height: 100%;
+        max-width: 1066px;
+        margin: 40px auto 0 auto;
+        position: relative;
+        .floor-plan-title {
+          color: $white;
+          cursor: pointer;
+          display: none;
+          font-size: 20px;
+          padding: 0 0 10px 0;
+          text-align: center;
+          h2 {
+            color: #b6e1e4;
+          }
+        }
+        .floor-plan-container {
+          display: none;
+          text-align: center;
+          .pagination {
+            text-align: center;
+            margin: 0 0 15px 0;
+            @include breakpoint(tablet) { margin: 0; }
+            .clearfix {
+              &:before {
+                content: "";
+                display: table;
+                &:after {
+                  content: "";
+                  display: table;
+                }
+              }
+              li {
+                cursor: pointer;
+                display: inline-block;
+                text-align: center;
+                @include font-family($opensans);
+                @include font(1.6,$medium,$textgray);
+                &.active { color: $blue; }
+                &:before {
+                  content: "|";
+                }
+                &:first-child:before {
+                  content: "";
+                }
+              }
+            }
+          }
+          .floor-plan-page {
+            display: none;
+            &.active {
+              display: block;
+            }
+            .floor-plan {
+              min-height: 225px;
+              padding: 0 0 20px 0;
+              margin: 0 40px 40px;
+              border-bottom: 3px solid $darkgray;
+              @include breakpoint(tablet) {
+                margin: 0 0 40px;
+                border: none;
+              }
+              @include breakpoint(ten) {
+                margin: 0 40px 40px;
+              }
+              &:last-child {
+                margin: 0 40px;
+                border: none;
+              }
+              .one-third-column {
+                @include breakpoint(tablet) {
+                  width: 30%;
+                  float: left;
+                }
+                &:first-child {
+                  margin: 0 20px 0 0;
+                  @include breakpoint(ten) {
+                    margin: 0 20px 0 30px;
+                  }
+                }
+                .name {
+                  @include font-family($squada);
+                  @include font(3,$medium,$blue);
+                  text-transform: uppercase;
+                  position: relative;
+                  padding: 0 0 10px;
+                  @include breakpoint(tablet) {
+                    @include font-size(4.8);
+                    text-align: right;
+                    padding: 0;
+                  }
+                }
+
+                .top-info {
+                  font-weight: 700;
+                  padding: 10px 0 5px 0;
+                  text-align: left;
+                  @include font-family($opensans);
+                  @include font(1.4, $light, $textgray);
+                  text-align: center;
+                  @include breakpoint(tablet) {
+                    @include font-size(1.8);
+                    padding: 5px 0 5px 0;
+                    text-align: left;
+                  }
+                  @include breakpoint(ten) {
+                    @include font-size(2);
+                  }
+                  .sqft { padding: 0 0 10px 0; }
+                  .bedrooms {
+                    padding: 0 5px 0 0;
+                    display: inline-block;
+                    @include breakpoint(tablet) {
+                      float: left;
+                    }
+                  }
+                  .bathrooms {
+                    display: inline-block;
+                  }
+                }
+                .bottom-info {
+                  padding: 10px 0 0 0;
+                  width: 100%;
+                  text-align: left;
+                  .pdf-link,
+                  .availability-link {
+                    display: none;
+                    @include breakpoint(tablet) { display: block; }
+                    @include breakpoint(ten) { display: inline-block; }
+                    a {
+                      background: $buttongray;
+                      @include font-family($squada);
+                      @include font(1.6, $light, $white);
+                      @include transition(all .25s ease);
+                      text-transform: uppercase;
+                      text-decoration: none;
+                      display: inline-block;
+                      padding: 10px 20px;
+                      @include breakpoint(tablet) { @include font-size(1.8); }
+                      @include breakpoint(ten) { @include font-size(2.2) }
+                      &:hover {
+                        background: $orange;
+                      }
+                    }
+                  }
+                  .availability-link {
+                    padding: 10px 0 0 0;
+                    @include breakpoint(ten) {
+                      padding: 0 0 0 10px;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+#gallery {
+  .categories {
+    background-color: $orange;
+    height: 80px;
+    position: relative;
+    text-align: center;
+    width: 100%;
+    z-index: 200;
+    ul li {
+      cursor: pointer;
+      display: inline-block;
+      overflow: hidden;
+      padding: 33px 0 0 0;
+      text-transform: uppercase;
+      vertical-align: top;
+      a {
+        color: $black;
+      }
+    }
+  }
+
+  #gallery-container {
+    overflow: hidden;
+    max-width: 1920px;
+    width: 100%;
+    margin: 0 auto;
+    #full-gallery {
+      display: none;
+      @include breakpoint(ten) { display: block; }
+      .photo {
+        float: left;
+        margin: 0;
+        max-height: 342px;
+        overflow: hidden;
+        position: relative;
+        width: 25%;
+        .light-box {
+          .overlay-wrap {
+            height: 100%;
+            width: 100%;
+            position: absolute;
+            .overlay-bg {
+              background: url('../images/RC_Stripe.png') repeat center center $orange;
+              height: 100%;
+              width: 100%;
+              position: absolute;
+            }
+            .overlay {
+              background: url('../images/gallery-hover.png') no-repeat center center transparent;
+              border: 10px solid $white;
+              box-sizing: border-box;
+              height: 100%;
+              width: 100%;
+              position: absolute;
+            }
+          }
+          img {
+            display: block;
+            margin: 0;
+            padding: 0;
+            height: auto;
+            width: 100%;
+          }
+        }
+      }
+    }
+    #mobile-gallery {
+      .photo {
+        margin: 0 0 1px 0;
+        img {
+          height: auto;
+          width: 100%;
+        }
+      }
+      @include breakpoint(ten) {
+        display: none;
+      }
+    }
+  }
+
+  #main-page-content {
+    height: auto;
+    position: relative;
+    @include breakpoint(tablet) { height: 325px; }
+    #main-headline {
+      @include font-family($squada);
+      @include font(2.8,$medium,$blue);
+      text-transform: uppercase;
+      text-align: center;
+      letter-spacing: 1px;
+      max-width: 1260px;
+      @include breakpoint(tablet) { @include font-size(4.8); }
+    }
+    #headline-h1 {
+      @include font-family($opensans);
+      @include font(1.6, $bold, $textgray);
+      line-height: 1.5;
+      text-align: center;
+      margin: 20px auto;
+      @include breakpoint(tablet) {
+        margin: 40px auto 0;
+        @include font-size(2.4);
+      }
+    }
+  }
+}
+
+#contact {
+  #form-and-hours {
+    position: relative;
+    z-index: 3;
+    display: table;
+    width: 100%;
+    margin: 15px 0;
+    @include breakpoint(tablet) {
+      margin: 0;
+    }
+    .background-wrap {
+      margin: 0 0 15px 0;
+      padding: 0 0 30px 0;
+      background: $lightgray;
+      overflow: hidden;
+      @include transition(all .25s ease);
+      @include breakpoint(tablet) {
+        padding: 90px 0;
+        margin: 0;
+      }
+      .form-and-hours-wrap {
+        #contact-form {
+          padding: 30px;
+          width: 100%;
+          box-sizing: border-box;
+          @include breakpoint(ten) {
+            padding: 0 0 0 50px;
+            max-width: 50%;
+            float: left;
+          }
+          // @include breakpoint(twelve) {
+          //   padding: 0 0 0 50px;
+          //   max-width: 75%;
+          // }
+          @include breakpoint(fourteen) {
+            padding: 0;
+          }
+
+          .left, .right {
+            @include breakpoint(tablet) {
+              float: left;
+              width: 50%;
+            }
+          }
+          .frm_style_formidable-style.with_frm_style .frm_default,
+          .frm_style_formidable-style.with_frm_style .placeholder,
+          .frm_style_formidable-style.with_frm_style .chosen-container-multi .chosen-choices li.search-field .default,
+          .frm_style_formidable-style.with_frm_style .chosen-container-single .chosen-default {
+            font-style: normal;
+          }
+
+          .frm_form_field {
+            input[type="text"],
+            input[type="tel"],
+            input[type="email"],
+            textarea {
+              height: 37px;
+              padding: 12px 20px;
+              border-radius: 0;
+              border: none;
+              box-shadow: none;
+              @include font-family($opensans);
+              @include font(1.4, $normal, $textgray);
+              @include breakpoint(tablet) {
+                @include font-size(1.8);
+                height: 46px;
+              }
+              &:focus {
+                box-shadow: 0 1px 1px rgba($black, 0.075) inset, 0 0 8px rgba($orange, 0.6);
+              }
+            }
+            textarea { height: auto; }
+          }
+
+          .left {
+            .frm_form_field {
+              margin: 0 0 10px 0;
+              @include breakpoint(tablet) { margin: 0 5px 10px 0; }
+            }
+          }
+          .right {
+            .frm_form_field {
+              margin: 0 0 10px 0;
+              @include breakpoint(tablet) { margin: 0 0 10px 5px; }
+            }
+          }
+
+          .comments {
+            clear: both;
+            margin: 0;
+            @include breakpoint(fourteen) {
+              max-width: 945px;
+            }
+          }
+
+          .submit {
+            float: right;
+            width: 100px;
+            @include breakpoint(tablet) { 
+              width: 125px;
+            }
+            input[type="submit"] {
+              margin: 0;
+              padding: 10px;
+              width: 100%;
+              border: 0;
+              border-radius: 0;
+              background: $orange;
+              @include appearance(none);
+              @include font-family($squada);
+              @include font(1.6,$medium,$white);
+              text-transform: uppercase;
+              @include transition(all .25s ease);
+              @include breakpoint(tablet) {
+                @include font-size(2.1);
+                padding: 15px;
+              }
+              &:hover {
+                background: $white;
+                color: $orange;
+              }
+            }
+          }
+          .frm_error_style { display: none; }
+          .frm_error { margin: 10px 0 0; }
+
+        }
+        .office-hours {
+          margin: 0 0 0 50px;
+          width: 100%;
+          @include breakpoint(mobileL) { 
+            max-width: calc(50% - 50px);
+            float: left;
+          }
+          @include breakpoint(ten) { 
+            max-width: calc(25% - 50px);
+          }
+          .title {
+            @include font-family($squada);
+            @include font(3,$medium,$blue);
+            text-transform: uppercase;
+            margin: 0 0 15px 0;
+          }
+          .office-hour {
+            @include font-family($opensans);
+            @include font(1.4, $normal, $textgray);
+            line-height: 1.75;
+            @include breakpoint(tablet) { @include font-size(1.8); }
+            @include breakpoint(ten) { @include font-size(1.6); }
+            @include breakpoint(twelve) { @include font-size(1.8); }
+          }
+        }
+        .address-container {
+          margin: 50px 0 0 50px;
+          width: 100%;
+          @include breakpoint(mobileL) { 
+            max-width: calc(50% - 50px);
+            float: left;
+            margin: 0 0 0 50px;
+          }
+          @include breakpoint(ten) { 
+            max-width: calc(25% - 50px);
+            margin: 0 0 0 50px;
+          }
+          .title {
+            @include font-family($squada);
+            @include font(3,$medium,$blue);
+            text-transform: uppercase;
+            margin: 0 0 15px 0;
+          }
+          .address {
+            margin: 0 0 20px 0;
+            a {
+              @include font-family($opensans);
+              @include font(1.4, $normal, $textgray);
+              @include transition(all .25s ease);
+              line-height: 1.75;
+              text-decoration: none;
+              &:hover {
+                color: $orange;
+              }
+              @include breakpoint(tablet) { @include font-size(1.8); }
+              @include breakpoint(ten) { @include font-size(1.6); }
+              @include breakpoint(twelve) { @include font-size(1.8); }
+            }
+          }
+
+          .residents-links {
+            margin: 0 0 20px 0;
+            a {
+              display: inline-block;
+              text-decoration: none;
+              margin: 0;
+              padding: 10px;
+              border: 0;
+              border-radius: 0;
+              background: $button-gray;
+              @include font-family($squada);
+              @include font(1.6,$medium,$white);
+              text-transform: uppercase;
+              @include transition(all .25s ease);
+              @include breakpoint(tablet) {
+                @include font-size(2.1);
+                padding: 15px;
+              }
+              &:hover {
+                background: $white;
+                color: $orange;
+              }
+            }
+          }
+        }
+      }
+
+      // Thank you page
+      &.thanks {
+        height: 482px;
+        width: 100%;
+        box-sizing: border-box;
+        background: $orange;
+        display: table-cell;
+        vertical-align: middle;
+        #contact-form {
+          width: 100%;
+          max-width: 100%;
+          text-align: center;
+          h2 {
+            @include font-family($squada);
+            @include font(2.8,$medium,$white);
+            text-transform: uppercase;
+            margin: 0 0 25px 0;
+            @include breakpoint(tablet) {
+              @include font-size(4.8);
+              margin: 0 0 40px 0;
+            }
+          }
+          p {
+            @include font-family($opensans);
+            @include font(1.4, $normal, $white);
+            line-height: 1.5;
+            @include breakpoint(tablet) { @include font-size(1.8); }
+          }
+        }
+      }
+    }
+  }
+}
+
+#error404 {
+  #error {
+    display: table;
+    width: 100%;
+    .error-wrapper {
+      display: table-cell;
+      text-align: center;
+      vertical-align: middle;
+      width: 100%;
+    }
+    &.background {
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center center;
+      .pattern-overlay {
+        background: url('../images/RC_Stripe.png') repeat center center rgba($black, 0.4);
+        padding: 20px;
+        h1.title {
+          @include font-family($squada);
+          @include font(4.8,$medium,$white);
+          text-transform: uppercase;
+          margin: 0 0 40px 0;
+        }
+        .error-content {
+          @include font-family($opensans);
+          @include font(1.8, $normal, $white);
+          line-height: 1.25;
+          @include breakpoint(tablet) {
+            padding: 0 100px;
+          }
+        }
+      }
+    }
+    &.no-background {
+      h1.title {
+        @include font-family($squada);
+        @include font(4.8,$medium,$blue);
+        text-transform: uppercase;
+        margin: 0 0 40px 0;
+      }
+      .error-content {
+        @include font-family($opensans);
+        @include font(1.8, $normal, $textgray);
+        line-height: 1.25;
+      }
+    }
+  }
+}
+.error404 {
+  #footer {
+    margin: 0;
+  }
+}
+
+#quick-signup {
+  clear: both;
+  padding: 70px 0;
+  background: $lightgray;
+  position: relative;
+  z-index: 2;
+  display: none;
+  @include breakpoint(tablet) {
+    display: block;
+  }
+  #quick-signup-title {
+    @include font-family($squada);
+    @include font(4.2,$medium,$white);
+    text-transform: uppercase;
+    text-align: center;
+    letter-spacing: 1px;
+    @include breakpoint(ten) {
+      @include font-size(4.8);
+    }
+  }
+
+  .frm_style_formidable-style.with_frm_style .frm_default,
+  .frm_style_formidable-style.with_frm_style .placeholder,
+  .frm_style_formidable-style.with_frm_style .chosen-container-multi .chosen-choices li.search-field .default,
+  .frm_style_formidable-style.with_frm_style .chosen-container-single .chosen-default {
+    font-style: normal;
+  }
+
+  #signup-form {
+    max-width: 545px;
+    margin: 30px auto 0;
+    .quick-signup-input {
+      float: left;
+      width: calc(100% - 132px);
+      margin: 0 7px 0 0;
+      input[type="email"] {
+        padding: 12px 20px;
+        @include font-family($opensans);
+        @include font(1.4, $normal, $textgray);
+        height: 38px;
+        border: 0;
+        border-radius: 0;
+        @include breakpoint(ten) {
+          @include font-size(1.8);
+          height: 53px;
+        }
+        &:focus {
+          box-shadow: 0 1px 1px rgba($black, 0.075) inset, 0 0 8px rgba($orange, 0.6);
+        }
+      }
+    }
+    .quick-signup-submit {
+      float: left;
+      width: 100px;
+      @include breakpoint(ten) { width: 125px; }
+      input[type="submit"] {
+        margin: 0;
+        padding: 10px;
+        width: 100%;
+        border: 0;
+        border-radius: 0;
+        background: $orange;
+        @include font-family($squada);
+        @include font(1.6,$medium,$white);
+        text-transform: uppercase;
+        @include transition(all .25s ease);
+        @include breakpoint(ten) {
+          @include font-size(2.1);
+          padding: 15px;
+        }
+        &:hover {
+          background: $white;
+          color: $orange;
+        }
+      }
+    }
+    .frm_error_style { display: none; }
+    .frm_error { margin: 10px 0 0; }
+  }
+}
+
+#mobile-footer {
+  background: $white;
+  text-align: center;
+  z-index: 2;
+  position: relative;
+  padding: 15px 0 0;
+  @include breakpoint(ten) { display: none; }
+  .footer-wrapper {
+    background: $darkgray;
+    padding: 30px 0;
+    a, a span, span {
+      @include font-family($opensans);
+      @include font(1.6, $normal, $white);
+      @include transition(all .25s ease);
+      text-decoration: none;
+    }
+    #footer-logo {
+      width: 55px;
+      margin: 0 auto;
+    }
+    .footer-social {
+      margin: 15px 0 0;
+      a {
+        @include font-size(2.5);
+        padding: 0 5px;
+        &:first-child { padding: 0 5px 0 0; }
+        &:last-child { padding: 0 0 0 5px; }
+      }
+      a:hover, a span:hover { color: $orange; }
+    }
+    .footer-phone { margin: 15px 0 0; }
+    .footer-address { margin: 15px 0 0; }
+    .management-links {
+      overflow: hidden;
+      margin: 20px 30px 0;
+      .footer-icons {
+        float: left;
+        margin: 20px 0 0;
+      }
+      .management-logo { float: right; }
+    }
+  }
+}
+
+#footer {
+  z-index: 1;
+  padding: 40px 0 0 0;
+  clear: both;
+  position: relative;
+  background: $white;
+  display: none;
+  @include breakpoint(ten) { display: block; }
+  .footer-wrapper {
+    padding: 30px 0 0;
+    background: $darkgray;
+    height: 125px;
+    padding: 30px 10px 0;
+    @include breakpoint(nineteen) {
+      padding: 30px 0;
+    }
+    .title {
+      @include font-family($squada);
+      @include font(2.4,$medium,$white);
+      margin: 0 0 20px 0;
+      text-transform: uppercase;
+    }
+    a, a span, span {
+      @include font-family($opensans);
+      @include font(1.4, $normal, $white);
+      @include transition(all .25s ease);
+      text-decoration: none;
+    }
+    a:hover, a span:hover { color: $orange; }
+    #footer-logo {
+      display: inline-block;
+      float: left;
+      margin: 0 50px 0 0;
+    }
+    .footer-address,
+    .footer-phone {
+      float: left;
+      margin: 10px 50px 0 0;
+    }
+    .footer-social {
+      float: left;
+      margin: 10px 0 0 0;
+      .title { margin: 0 0 7px 0; }
+      a {
+        @include font-size(2.5);
+        padding: 0 5px;
+        &:first-child { padding: 0 5px 0 0; }
+        &:last-child { padding: 0 0 0 5px; }
+      }
+    }
+    .management-links {
+      float: right;
+      margin: 32px 0 0 0;
+      .footer-icons {
+        float: left;
+        margin: 7px 10px 0 0;
+        a span, span {
+          @include font-size(2.6);
+          padding: 0 2px;
+        }
+      }
+      .management-logo { float: left; }
+    }
+  }
+}
